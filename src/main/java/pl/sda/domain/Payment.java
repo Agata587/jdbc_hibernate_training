@@ -16,6 +16,13 @@ public class Payment {
         this.amount = amount;
     }
 
+    public Payment (String customerName, String checkNo, LocalDate date, double amount) {
+        this.customerName = customerName;
+        this.checkNo = checkNo;
+        this.date = date;
+        this.amount = amount;
+    }
+
     @Override
     public String toString() {
         return "Payment{" +

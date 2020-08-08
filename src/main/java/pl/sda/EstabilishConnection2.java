@@ -63,7 +63,12 @@ public class EstabilishConnection2 {
             System.out.println("10ta pozycja na liście to: " + payments.get(9));*/
 
 
-            printProductsWithinProductLineForReturnValue(1.0, ProductLine.CLASSIC_CARS, connection);
+           // printProductsWithinProductLineForReturnValue(1.0, ProductLine.CLASSIC_CARS, connection);
+
+      /*      Payment payment = new Payment("114", "yumyum7", LocalDate.now(), 500.0);
+            insert(payment, connection);*/
+
+            deleteOrder(10100, connection);
 
 
         }
@@ -195,6 +200,57 @@ public class EstabilishConnection2 {
 
     }
 
+    // przykład kiedy chcemy dodać daną do bazy danych. Bedziemy dodawać płatność do tabeli Payment
+    //inserting into database example
+
+    public static void insert (final Payment payment, final Connection connection) {
+
+        // Kod z MySQL:
+       // insert into payments values(103, 'DUPA1', '2020-08-01', 5000.0);
+        //select * from payments where checkNumber ='DUPA1';
+
+        final String Query = "insert into payments values(?,?,?,?)"; //nalezy rozdzielić przecinkami i napisać łącznie
+
+        //(String customerName, String checkNo, java.sql.Date date, double amount)  -> to jest nam potrzebne do ustawienia parametrów
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(Query)){  //bierzemy te parametry które są w klasie Payment w konstruktorze
+            preparedStatement.setString(1,payment.getCustomerName());
+            preparedStatement.setString(2, payment.getCheckNo());
+            preparedStatement.setDate(3, java.sql.Date.valueOf(payment.getDate()));
+            preparedStatement.setDouble(4, payment.getAmount());
+
+          final int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Inserted " + rowsAffected + " rows.");
+
+        }
+        catch(SQLException sex) {
+            System.err.println("Blad odczytu z bazy danych:" + sex);
+        }
+    }
+
+
+
+    //  teraz bedziemy usuwac
+    public static void deleteOrder (final int orderNumber, final Connection connection) {
+
+
+        final String Query = "delete from orders where orderNumber = ?";
+
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(Query)){  //bierzemy te parametry które są w klasie Payment w konstruktorze
+            preparedStatement.setInt(1, orderNumber);
+
+            final int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Deleted " + rowsAffected + " rows.");
+
+        }
+        catch(SQLException sex) {
+            System.err.println("Blad odczytu z bazy danych:" + sex);
+        }
+    }
+
+
+    }
 
 
 
@@ -202,8 +258,4 @@ public class EstabilishConnection2 {
 
 
 
-
-
-
-}
 
