@@ -59,8 +59,13 @@ public class EstabilishConnection2 {
                 System.out.println(result.getString("customerName") + " | " + result.getString("country"));
             }*/
 
-            List<Payment> payments = retrievePaymentsForYearAndAmountAbove(2004, 10000.0, connection);
-            System.out.println("10ta pozycja na liście to: " + payments.get(9));
+          /*  List<Payment> payments = retrievePaymentsForYearAndAmountAbove(2004, 10000.0, connection);
+            System.out.println("10ta pozycja na liście to: " + payments.get(9));*/
+
+
+            printProductsWithinProductLineForReturnValue(1.0, ProductLine.CLASSIC_CARS, connection);
+
+
         }
         catch(SQLException sex) {
             System.err.println("Blad nawiazywania polaczenia z baza danych: " + sex);
@@ -140,7 +145,55 @@ public class EstabilishConnection2 {
 
 
 
-     
+        /*
+    Cwiczenie #1: Bazujac na metodzie printPaymentsForYearAndAmountAbove napisz wlasna metode, ktora z tabeli 'products'
+    wypisze produkty, ktore generuja zarobek okreslony jako (msrp-buyPrice)/buyprice>0.75
+    i przynaleza do żądanej kategorii productLine = Motorcycles, Classic Cars itd.)
+     */
+
+    // select * from products;
+
+    // sprawdzamy najpierw w SQL czy to działa
+    // mając zapytanie SQL wrzucamy je do naszego Query
+    // odpowiednio uzupełniamy parametry w Try
+    // zwracamy ReslutSet'a
+
+
+
+    public static void printProductsWithinProductLineForReturnValue (final double returnValue, final ProductLine productLine, final Connection connection) {
+
+        //zwracamy w metodzie zarobek -> returnValue, oraz productLine
+
+        String parametrizedQuery = "select * from products where (MSRP-buyPrice)/buyPrice > ? and productLine = ?";
+        // wklejamy komende z SQL'a i zamiast kontretnych parametrow dajemy "?"
+
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(parametrizedQuery)){
+            preparedStatement.setDouble(1, returnValue);  //pierwszy znak zapytania
+            preparedStatement.setString(2, productLine.toString());  //drugi znak zapytania
+
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            System.out.printf("Oto produkt który generuje zarobek w wysokości %f i przynależy do grupy produktów %s\n",
+                    returnValue, productLine);
+
+
+            while(resultSet.next()) {
+                System.out.println("Product name | Product Vendor | MSRP");
+                System.out.printf("%s | %s | %f\n",               // printf to jest w formacie!!!!
+                        resultSet.getString("productName"),
+                        resultSet.getString("productVendor"),
+                        resultSet.getDouble("MSRP"));
+            }
+
+        }
+        catch(SQLException sex) {
+            System.err.println("Blad odczytu z bazy danych:" + sex);
+        }
+
+
+    }
 
 
 
