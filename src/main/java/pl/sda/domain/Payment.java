@@ -5,19 +5,19 @@ import java.time.LocalDate;
 public class Payment {
 
 
-    private final String customerName, checkNo;
+    private final String customerNumber, checkNo;
     private final LocalDate date;
     private final double amount;
 
-    public Payment (String customerName, String checkNo, java.sql.Date date, double amount) {
-        this.customerName = customerName;
+    public Payment (String customerNumber, String checkNo, java.sql.Date date, double amount) {
+        this.customerNumber = customerNumber;
         this.checkNo = checkNo;
         this.date = date.toLocalDate();
         this.amount = amount;
     }
 
-    public Payment (String customerName, String checkNo, LocalDate date, double amount) {
-        this.customerName = customerName;
+    public Payment (String customerNumber, String checkNo, LocalDate date, double amount) {
+        this.customerNumber = customerNumber;
         this.checkNo = checkNo;
         this.date = date;
         this.amount = amount;
@@ -26,15 +26,15 @@ public class Payment {
     @Override
     public String toString() {
         return "Payment{" +
-                "customerName='" + customerName + '\'' +
+                "customerName='" + customerNumber + '\'' +
                 ", checkNo='" + checkNo + '\'' +
                 ", date=" + date +
                 ", amount=" + amount +
                 '}';
     }
 
-    public String getCustomerName () {
-        return customerName;
+    public String getCustomerNumber() {
+        return customerNumber;
     }
 
     public String getCheckNo () {

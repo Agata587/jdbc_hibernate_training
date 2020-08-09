@@ -1,9 +1,9 @@
 package pl.sda;
 
+import pl.sda.domain.Office;
 import pl.sda.domain.Payment;
 import pl.sda.domain.ProductLine;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
@@ -68,8 +68,23 @@ public class EstabilishConnection2 {
       /*      Payment payment = new Payment("114", "yumyum7", LocalDate.now(), 500.0);
             insert(payment, connection);*/
 
-            deleteOrder(10100, connection);
+          //  deleteOrder(10100, connection);
 
+            /*Payment payment = new Payment("114", "yumyum7", LocalDate.now(), 500.0);
+            updatePayment(payment, connection);*/
+
+
+           Office warsawOffice = Office.builder()
+                    .officeCode("8")
+                    .city("Warsaw")
+                    .phone("+48 599 60 60")
+                    .addressLine1("Wiklinowa 5/5")
+                    . country("Poland")
+                    .postalCode("21-010")
+                    .teritory("EMEA")
+                    .build();
+
+            insert(warsawOffice,connection);
 
         }
         catch(SQLException sex) {
@@ -98,12 +113,12 @@ public class EstabilishConnection2 {
 
            ResultSet resultSet = preparedStatement.executeQuery();
 
-           System.out.printf("Oto palatnosci za rok %s w kwocie przekraczającej %f\n", year, minAmount); //PrintStream w formacie
+           System.out.printf("Oto palatnosci za rok %s w kwocie przekraczającej %f\n", year, minAmount); //Formatowanie Stringa
 
 
            while(resultSet.next()) {
                System.out.println("Customer number | Check number | Payment Date | Amount");
-               System.out.printf("%s | %s | %s | %f\n",               // printf to jest w formacie!!!!
+               System.out.printf("%s | %s | %s | %f\n",               // printf to jest formatowanie Stringa
                        resultSet.getString(1),
                        resultSet.getString(2),
                        resultSet.getDate(3),
@@ -214,7 +229,7 @@ public class EstabilishConnection2 {
         //(String customerName, String checkNo, java.sql.Date date, double amount)  -> to jest nam potrzebne do ustawienia parametrów
 
         try(PreparedStatement preparedStatement = connection.prepareStatement(Query)){  //bierzemy te parametry które są w klasie Payment w konstruktorze
-            preparedStatement.setString(1,payment.getCustomerName());
+            preparedStatement.setString(1,payment.getCustomerNumber());
             preparedStatement.setString(2, payment.getCheckNo());
             preparedStatement.setDate(3, java.sql.Date.valueOf(payment.getDate()));
             preparedStatement.setDouble(4, payment.getAmount());
@@ -250,7 +265,110 @@ public class EstabilishConnection2 {
     }
 
 
+    /*Cwiczenie 2:
+    A. Napisac metode aktualizujaca pola amount i date dla payment korzystajac z zapytania sql:
+    update payments set amount=777.77 where customerNumber = 114 AND checkNumber='yumyum7';
+    B. Napisac metode pozwalajca na dodanie nowego Office do bazy danych (z obiektu domenowego)*/
+
+
+    //lepiej jest rozbić te metody aktualizujące poszczególne pola - antypattern
+    //problem: i tak nie mozna przekazac payment.date == null, poniewaz konstruktor jest nierozwiazywalny
+
+    public static void updatePayment (Payment payment, Connection connection) {
+
+       // (final String customerNumber, final String checkNumber, final double amount, final LocalDate date, Connection connection)
+        // zamiast wypisywać wszystkie pozycje w tym nawiasie z updatePayment to lepiej jest dać obiekt Payment który zawiera wszystkie te parametry
+
+        String query = " ";
+        if (payment.getAmount() > 0.0 && payment.getDate() != null)
+            query = "update payments set amount=?, paymentDate=? where customerNumber=? AND checkNumber=?";
+        else if(payment.getAmount() > 0.0)
+            query = "update payments set amount=? where customerNumber=? AND checkNumber=?";
+        else if(payment.getDate() != null)
+            query = "update payments set paymentDate=? where customerNumber=? AND checkNumber=?";
+
+
+
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            if (payment.getAmount() > 0.0 && payment.getDate() != null){
+            preparedStatement.setDouble(1, payment.getAmount());
+            preparedStatement.setDate(2, java.sql.Date.valueOf(payment.getDate()));
+            preparedStatement.setString(3, payment.getCustomerNumber());
+            preparedStatement.setString(4, payment.getCheckNo());
+        }
+            else if(payment.getAmount() > 0.0) {
+            preparedStatement.setDouble(1, payment.getAmount());
+            preparedStatement.setString(2, payment.getCustomerNumber());
+            preparedStatement.setString(3, payment.getCheckNo());
+        }
+            else if(payment.getDate() != null) {
+            preparedStatement.setDate(1, java.sql.Date.valueOf(payment.getDate()));
+            preparedStatement.setString(2, payment.getCustomerNumber());
+            preparedStatement.setString(3, payment.getCheckNo());
+        }
+            final int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Updated " + rowsAffected + " rows.");
+
+        }
+        catch(SQLException sex) {
+            System.err.println("Blad odczytu z bazy danych:" + sex);
+        }
     }
+
+
+    //insert into offices values(8, 'Warsaw', '22456789', 'ulica testowa', 'ul test 2', 'Maz', 'Poland', 22222, 'POLAND');
+
+    public static void insert(final Office office, final Connection connection) {
+        final String query = "insert into offices values(?,?,?,?,?,?,?,?,?)";
+
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, office.getOfficeCode());
+            preparedStatement.setString(2, office.getCity());
+            preparedStatement.setString(3, office.getPhone());
+            preparedStatement.setString(4, office.getAddressLine1());
+            preparedStatement.setString(5, office.getAddressLine2());
+            preparedStatement.setString(6, office.getState());
+            preparedStatement.setString(7, office.getCountry());
+            preparedStatement.setString(9, office.getTeritory());
+            preparedStatement.setString(8, office.getPostalCode());
+
+            final int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Inserted " + rowsAffected + " rows.");
+        }
+        catch(SQLException sex) {
+            System.err.println("Blad odczytu z bazy danych: " + sex);
+        }
+    }
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
