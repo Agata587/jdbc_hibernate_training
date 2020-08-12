@@ -1,4 +1,4 @@
-package pl.sda.domain;
+package jdbc.domain;
 
 
 /*

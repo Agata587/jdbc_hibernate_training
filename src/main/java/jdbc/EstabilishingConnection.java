@@ -1,4 +1,4 @@
-package pl.sda;
+package jdbc;
 
 import java.io.IOException;
 import java.io.InputStream;

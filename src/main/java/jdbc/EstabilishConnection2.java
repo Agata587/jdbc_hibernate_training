@@ -1,8 +1,8 @@
-package pl.sda;
+package jdbc;
 
-import pl.sda.domain.Office;
-import pl.sda.domain.Payment;
-import pl.sda.domain.ProductLine;
+import jdbc.domain.Office;
+import jdbc.domain.Payment;
+import jdbc.domain.ProductLine;
 
 import java.io.IOException;
 import java.io.InputStream;
