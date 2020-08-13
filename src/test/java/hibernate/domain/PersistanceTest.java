@@ -78,7 +78,7 @@ public class PersistanceTest {
         }
     }
 
-    /*@Test(dependsOnMethods = "saveMovies")
+ /*   @Test(dependsOnMethods = "saveMovies")
     public void readMovies() {
         try(Session session = sessionFactory.openSession()) {
             List<Movie> movies = session.createQuery("from Movie", Movie.class).list();

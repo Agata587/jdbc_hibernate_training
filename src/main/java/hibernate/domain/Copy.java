@@ -1,14 +1,12 @@
 package hibernate.domain;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.print.attribute.standard.CopiesSupported;
 
 
-@Entity(name = "COPIES")
+@Entity
+@Table(name = "COPIES")
 public class Copy {
 
 

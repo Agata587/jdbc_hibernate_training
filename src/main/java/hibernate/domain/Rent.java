@@ -30,7 +30,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 
 
-@Entity(name = "RENTS")
+@Entity
+@Table(name = "RENTS")
 public class Rent {
 
     @Id

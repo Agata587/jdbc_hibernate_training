@@ -28,7 +28,8 @@ import java.time.LocalDate;
 @AllArgsConstructor  //anotacja ustawiająca nam konstruktor na wszystkie argumenty
 
 
-@Entity(name = "MOVIES")   // nadajemy nazwę naszej Encji
+@Entity //jeśli nie podamy Table name to tabela przyjmie nazwę Encji. Lepiej jej zostawić Entity domyślne (wówczas będzie to nazwa klasy) a Tabeli nadać nazwę jaką chcemy
+@Table(name = "MOVIES")   // nadajemy nazwę naszej Tabeli
 public class Movie {
 
 
