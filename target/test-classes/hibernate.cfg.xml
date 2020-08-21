@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>                                                     <!--to wszysto to jest konfiguracja sessionFactory -->
+        <!-- Ustawienia polaczenia z baza danych -->
+        <property name="connection.driver_class">org.h2.Driver</property>   <!-- tutaj wskazujemy Drivera -->
+        <property name="connection.url">jdbc:h2:./db2</property>          <!-- to się  bierze z dokumentacji -->
+        <property name="connection.username">sa</property>
+        <property name="connection.password"/>                             <!--domyślnie nie ma passworda -->
+        <property name="dialect">org.hibernate.dialect.H2Dialect</property>   <!-- z dokumentacji -->
+        <!-- Wyswietlaj w konsoli wszystkie kody SQL - bezcenne przy debugowaniu -->
+        <property name="show_sql">true</property>                              <!-- ustawiamy to na TRUE -->
+        <!-- Przy starcie aplikacji usun istniejaca baze i utworz ja od nowa -->
+        <property name="hbm2ddl.auto">create-drop</property>
+        <!-- Klasy mapowane -->
+        <mapping class="hibernate.domain.SimpleMovie"/>
+        <mapping class="hibernate.domain.Movie"/>
+        <mapping class="hibernate.domain.Copy"/>
+        <mapping class="hibernate.domain.Customer"/>
+        <mapping class="hibernate.domain.Rent"/>
+    </session-factory>
+</hibernate-configuration>
+
+<!-- jedyne co będzie się tu zmieniać to dodawanie mapowanych klas, reszta to są stałe pozycje potrzebne do konfiguracji -->
