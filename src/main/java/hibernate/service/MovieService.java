@@ -23,7 +23,10 @@ public interface MovieService {
 
     //czyli idea jest taka ze przekazujemy Movie, po title wyszukujemy to movie i wszystkie non null fields z tego movie robimy
     // aktualizacje na naszym obiekcie i to zapisujemy
+
     Movie updateMovie(Movie movie);  // przekazujemy instancję Movie już po wprowadzeniu jakichś zmian
+
+    boolean deleteMovie(String title);  //będziemy usuwali po title
 
 
 }
