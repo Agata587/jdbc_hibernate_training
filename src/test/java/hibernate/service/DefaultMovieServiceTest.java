@@ -116,7 +116,6 @@ public class DefaultMovieServiceTest {
         Assertions.assertThat(afterUpdate).isEqualToIgnoringNullFields(updated)  //sprawdza nam pole po polu czy jest update
                 .as("Film nie został zaktualizowany");
 
-
     }
 
 
@@ -128,6 +127,35 @@ public class DefaultMovieServiceTest {
     }
 
 
+
+    @Test
+    public void deletes_existing_movie() {
+
+        //testy muszą być niezależne wiec najpierw musimy utworyć film i dopiero go usunąć
+
+        //given
+        movieService.createMovie("My movie", Genre.DOCUMENTARY, LocalDate.now(),null);
+        Movie beforeDelete = movieService.findMovie("My movie");
+
+        //when
+        movieService.deleteMovie("My movie");
+        Movie afterDelete = movieService.findMovie("My movie");
+
+
+        //then
+        Assertions.assertThat(beforeDelete).isNotNull();
+        Assertions.assertThat(afterDelete).isNull();
+
+
+
+    }
+
+
+    @Ignore
+    @Test
+    public void does_not_delete_non_existing_movie() {
+
+    }
 
 
 }

@@ -130,17 +130,20 @@ public class DefaultMovieService implements MovieService {
 
     @Override
     public boolean deleteMovie(String title) {
-        return false;
+        Session session = DefaultSessionService.getSession();  //rozpoczynamy sesję
+        Movie m = findMovie(title, session);             // najpierw ten obiekt jest znajdowany a dopiero potem usuwany
+        if (m != null) {
+            Transaction tx = session.beginTransaction();   // rozpoczynamy tranzakcje
+            session.delete(m);
+            tx.commit();
+
+            DefaultColoredOutputService.print(DefaultColoredOutputService.ANSI_RESET, "DefaultMovieService: Usunięto rekord z tabeli MOVIES o title = " + title);
+            return true;
+
+        } else {
+            return false;
+        }
     }
 
 
-
-
-
-
-
-
-
-
-
-    }
+}
