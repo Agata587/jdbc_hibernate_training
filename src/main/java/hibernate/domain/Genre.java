@@ -16,7 +16,7 @@ public enum Genre {
     ACTION,
     DRAMA,
     ROMANCE,
-    HISTORICAL
+    HISTORICAL;
 
 
 

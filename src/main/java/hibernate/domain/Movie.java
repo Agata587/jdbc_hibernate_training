@@ -59,7 +59,33 @@ public class Movie {
     String description;
 
 
+    /**
+     * Override this instance fields with non-null fields of other instance.
+     *
+     * @param other
+     * @return true if any changes applies, otherwise return false
+     */
 
+    public boolean overrideWithNonNullFields(Movie other) {
+        boolean isInstanceChanged = false;
+
+        //TO-DO: Java Reflection API - iterate over object fields and override if other's field is non null
+        //wówczas byłoby bardziej generycznie i gdyby nam doszły nowe fildy to by nam dodawała te z non null
+        if(other.genre != null) {
+            this.genre = other.genre;
+            isInstanceChanged = true;
+        }
+        if(other.releaseDate != null) {
+            this.releaseDate = other.releaseDate;
+            isInstanceChanged = true;
+        }
+        if(other.description != null) {
+            this.description = other.description;
+            isInstanceChanged = true;
+        }
+
+        return isInstanceChanged;
+    }
 
 
     public Long getId() {
