@@ -20,6 +20,12 @@
         <mapping class="hibernate.domain.Copy"/>
         <mapping class="hibernate.domain.Customer"/>
         <mapping class="hibernate.domain.Rent"/>
+        <mapping class="hibernate.relations.Email"/>
+        <mapping class="hibernate.relations.Message"/>
+        <mapping class="hibernate.relations.EmailMapped"/>
+        <mapping class="hibernate.relations.MessageMapped"/>
+        <mapping class="hibernate.cascading.EmailCascading"/>
+        <mapping class="hibernate.cascading.MessageCascading"/>
     </session-factory>
 </hibernate-configuration>
 
