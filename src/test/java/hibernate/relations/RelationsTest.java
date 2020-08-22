@@ -1,14 +1,21 @@
 package hibernate.relations;
 
+import hibernate.domain.*;
 import hibernate.service.DefaultSessionService;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import static org.testng.Assert.*;
 import static org.testng.Assert.assertEquals;
 
 public class RelationsTest {
+
+
+//opis tego jest na filmie - 2 dzień, ostatnia część od godz. 16:00
 
     @Test
     public void testNonManagedRelationship(){
@@ -181,8 +188,102 @@ public class RelationsTest {
         assertNull(msg.getEmail()); //email nigdy nie zostal powiazany z msg poprzez FK
     }
 
+//opis tego jest 3go dnia pierwszy film ok. 10:15
+
+    @Test
+    public void rent_relates_to_customer_and_copy_AND_copy_relates_to_movie(){
+
+    Long rentId, customerId, copyID, movieId;
+    Rent rent;
+    Customer customer;
+    Copy copy;
+    Movie movie;
+
+    try(Session session = DefaultSessionService.getSession()) {  //otwieramy sesję
+        Transaction tx = session.beginTransaction();               // rozpoczynamy tranzakcje
+
+
+        //następnie tworzymy obiekty i ustawiamy sobie na nich pola (te pola olaliśmy i tylko w Customer ustawiliśmy pola, tylko na potrzeby testu żeby spr. czy działa)
+        rent = Rent.builder()
+                .rentPriceDay(new BigDecimal("3.2"))
+                .borrowedDate(LocalDate.now())
+                .status(RentStatus.IN_RENT)
+                .build();
+
+        customer =  Customer.builder()
+                    .fullName("Przemyslaw Woźniak")
+                    .phone("777 77 77")
+                    .address("Pelczynskiego 140/4")
+                    .build();
+
+        movie = Movie.builder()
+                .title("Ogniem i mieczem")
+                .genre(Genre.HISTORICAL)
+               .releaseDate(LocalDate.of(1999,2,8))
+                .build();
+
+        copy = new Copy();
+
+
+        //rent jest tą stroną zarządza
+        //relacją rent - customer zarządza rent
+        rent.setCustomer(customer);
+        //relacją rent - copy zarządza rent
+        rent.setCopy(copy);
+        //relacją copy - movie zarządza copy
+        copy.setMovie(movie);
+
+
+        //kazdy z tych obiektów teraz trzeba zapisać
+        session.save(rent);
+        session.save(customer);
+        session.save(movie);
+        session.save(copy);
+
+
+        //następnie pobieramy pola
+        rentId = rent.getId();
+        customerId = customer.getId();
+        movieId = movie.getId();
+        copyID = copy.getId();
+
+        tx.commit();   //commitujemy sobie
+
+    }
+
+
+        assertNotNull(rent.getCopy());
+        assertNull(copy.getRent());
+        assertNotNull(rent.getCustomer());
+        assertNull(customer.getRents());
+
+        assertNotNull(copy.getMovie());
+        assertNull(movie.getCopies());
+
+
+        //otwieram nową sesję i nadczytuje te obiekty
+        try(Session session = DefaultSessionService.getSession()) {
+            rent = session.get(Rent.class, rentId);
+            copy = session.get(Copy.class, copyID);
+            movie = session.get(Movie.class, movieId);
+            customer = session.get(Customer.class, customerId);
+
+        }
+
+        //teraz trzeba potwierdzić że not null jest wszędzie
+        //po odczytaniu z bazy danych i uwzględnieniu kolumny FK, relacje w JVM zostają poprawnie ustanowione
+        assertNotNull(rent.getCopy());
+        assertNotNull(copy.getRent());
+        assertNotNull(rent.getCustomer());
+        assertNotNull(customer.getRents());
+
+        assertNotNull(copy.getMovie());
+        assertNotNull(movie.getCopies());
+
+
+
+    }
 
 }
 
 
-//opis tego jest na filmie - 2 dzień, ostatnia część od godz. 16:00

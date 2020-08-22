@@ -41,4 +41,19 @@ public class Copy {
     public void setRented(boolean rented) {
         isRented = rented;
     }
+
+
+    //musimy dodać settery i gettery dla Movie na potrzeby testu rent_relates_to_customer_and_copy_AND_copy_relates_to_movie()
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    public Rent getRent() {
+        return rent;
+    }
 }

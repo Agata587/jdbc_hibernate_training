@@ -84,4 +84,26 @@ public class Rent {
     public LocalDate getReturnedDate() {
         return returnedDate;
     }
+
+
+    //musimy dodać settery i gettery dla Customer i Copy na potrzeby testu rent_relates_to_customer_and_copy_AND_copy_relates_to_movie()
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Copy getCopy() {
+        return copy;
+    }
+
+    public void setCopy(Copy copy) {
+        this.copy = copy;
+    }
+
+
+
 }

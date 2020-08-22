@@ -113,4 +113,8 @@ public class Movie {
         return description;
     }
 
+
+    public List<Copy> getCopies() {
+        return copies;
+    }
 }

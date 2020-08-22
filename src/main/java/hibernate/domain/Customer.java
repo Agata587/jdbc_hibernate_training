@@ -85,12 +85,12 @@ public class Customer {
     }
 */
 
-
     public String getAddress() {
         return address;
     }
 
 
-
-
+    public List<Rent> getRents() {
+        return rents;
+    }
 }
