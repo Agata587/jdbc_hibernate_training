@@ -39,7 +39,7 @@ public class Movie {
    Long id;    // to jest movieId INT(7) AUTO_INCREMENT,
 
 
-    @OneToMany (mappedBy = "movie")  //jeden film ma wiele copies
+    @OneToMany (mappedBy = "movie", orphanRemoval = true, cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)  //jeden film ma wiele copies
     List<Copy> copies;
 
 
@@ -116,5 +116,9 @@ public class Movie {
 
     public List<Copy> getCopies() {
         return copies;
+    }
+
+    public void setCopies(List<Copy> copies) {
+        this.copies = copies;
     }
 }
