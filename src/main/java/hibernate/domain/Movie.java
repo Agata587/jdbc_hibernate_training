@@ -20,6 +20,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Builder // dodaliśmy go żeby nam było łatwiej później
@@ -36,6 +37,10 @@ public class Movie {
     @Id
     @GeneratedValue
    Long id;    // to jest movieId INT(7) AUTO_INCREMENT,
+
+
+    @OneToMany (mappedBy = "movie")  //jeden film ma wiele copies
+    List<Copy> copies;
 
 
 

@@ -6,6 +6,19 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.print.DocFlavor;
+import java.util.List;
+
+/*
+CREATE TABLE IF NOT EXISTS customers (
+	customerId INT(7) AUTO_INCREMENT,
+	fullName VARCHAR(255) NOT NULL,
+	phone VARCHAR(11) NOT NULL, #xxx-xxx-xxx
+	address VARCHAR(255) NOT NULL,
+    PRIMARY KEY(customerId)
+);
+ */
+
+
 
 
 @Builder
@@ -19,6 +32,10 @@ public class Customer {
     @Id
     @GeneratedValue
     Long id;            //customerId INT(7) AUTO_INCREMENT
+
+    //mamy pole listę wypozyczeń
+    @OneToMany (mappedBy = "customer")// mamy relację one customer to many rents (pierwsze słowo odnosi się do nazwy klasy w której piszemy)
+    List<Rent> rents;
 
 
     @Column(nullable = false)

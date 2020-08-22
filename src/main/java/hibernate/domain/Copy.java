@@ -15,6 +15,13 @@ public class Copy {
     Long id;       //copyId INT(7) AUTO_INCREMENT
 
 
+    @OneToOne(mappedBy = "copy")
+    Rent rent;
+
+    @ManyToOne   //many copies to one movie
+    Movie movie;
+
+
     //@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")   //isRented BOOLEAN DEFAULT false,
     boolean isRented;
 

@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -38,6 +39,15 @@ public class Rent {
     @GeneratedValue
     @Column(length = 7)
     Long id;    //rentId INT(7) AUTO_INCREMENT,
+
+    @ManyToOne  //ustaliliśmy że taką mamy relację, czyli many RENT to one customer (pierwsze słowo odnosi sie do nazwy klasy w której piszemy)
+    Customer customer;
+
+
+    @OneToOne
+    Copy copy;
+
+
 
     @ColumnDefault("0")  //default ordinal = 0 = IN_RENT - bo w Enum RentSerwis jest na pozycji pierwszej podany więc "0'
     @Column(nullable = false)
